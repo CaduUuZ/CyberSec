@@ -8,8 +8,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-# Importamos NOSSA funcao do arquivo features/hashing.py
+# Importamos NOSSAS funcoes das features.
 from app.features.hashing import gerar_hashes
+from app.features.password import analisar_senha
 
 
 # 1) Cria a aplicacao. 'title' aparece na documentacao automatica.
@@ -36,6 +37,11 @@ class HashRequest(BaseModel):
     texto: str
 
 
+# Formato dos dados que o site envia para o Card 2 (a senha).
+class PasswordRequest(BaseModel):
+    senha: str
+
+
 # 4) Primeiro endpoint: a rota inicial "/", so pra testar se a API vive.
 #    O @app.get("/") e um "decorator": ele PLUGA a funcao abaixo na
 #    rota "/". Quando alguem acessa "/", o FastAPI chama esta funcao.
@@ -59,3 +65,11 @@ def endpoint_hash(req: HashRequest):
         "texto": req.texto,
         "hashes": resultado,
     }
+
+
+# 6) O endpoint do Card 2 - Password Strength Checker.
+@app.post("/api/password")
+def endpoint_password(req: PasswordRequest):
+    # Chama nossa funcao e devolve a analise. Como ela ja retorna
+    # um dicionario completo, e so entregar direto.
+    return analisar_senha(req.senha)
