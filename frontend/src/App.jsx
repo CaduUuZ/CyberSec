@@ -4,6 +4,7 @@
 // ============================================================
 
 import HashCard from "./components/HashCard";
+import PasswordCard from "./components/PasswordCard";
 
 export default function App() {
   return (
@@ -19,8 +20,10 @@ export default function App() {
         {/* Card 1 - pronto! */}
         <HashCard />
 
+        {/* Card 2 - pronto! */}
+        <PasswordCard />
+
         {/* Os proximos cards entram aqui:
-            <PasswordCard />
             <FileIntegrityCard />
             ...cada feature nova = um componente nesta grade. */}
       </main>

@@ -131,3 +131,35 @@ body {
 }
 
 .error { color: #f85149; font-size: .85rem; margin-top: 10px; }
+
+/* ---- Card 2: barra de forca e criterios ---- */
+.pw-result { margin-top: 18px; }
+
+.pw-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);  /* 5 segmentos iguais */
+  gap: 6px;
+}
+.pw-seg {
+  height: 10px;
+  border-radius: 4px;
+  transition: background .25s;   /* a cor muda suavemente */
+}
+
+.pw-label {
+  margin-top: 10px;
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.pw-criterios {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* duas colunas */
+  gap: 6px;
+  font-size: .82rem;
+}
+.pw-criterios li.ok { color: var(--accent); }
+.pw-criterios li.no { color: var(--muted); }
