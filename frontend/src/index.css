@@ -226,3 +226,81 @@ body {
   color: var(--accent);
   font-weight: 600;
 }
+
+/* ---- Card 5: log analyzer ---- */
+.log-area {
+  font-family: "Cascadia Code", "Consolas", monospace;
+  font-size: .72rem;
+  resize: vertical;
+  line-height: 1.4;
+}
+.log-result { margin-top: 16px; }
+
+.log-alertas { margin-bottom: 14px; }
+.log-alerta {
+  background: rgba(248, 81, 73, .12);
+  border: 1px solid #f8514955;
+  color: #f85149;
+  font-size: .82rem;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+}
+
+.log-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.log-stats > div {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  font-size: .72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.log-stats span {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.log-stats .c-red { color: #f85149; }
+.log-stats .c-green { color: var(--accent); }
+
+.log-bloco { margin-bottom: 14px; }
+.log-bloco-titulo {
+  font-size: .75rem;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.log-linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: .82rem;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--border);
+}
+.mono { font-family: "Cascadia Code", "Consolas", monospace; }
+
+.log-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 80px;
+  padding-top: 6px;
+}
+.log-bar-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.log-bar {
+  width: 26px;
+  background: var(--accent-2);
+  border-radius: 4px 4px 0 0;
+  min-height: 3px;
+}
+.log-hora { font-size: .7rem; color: var(--muted); }

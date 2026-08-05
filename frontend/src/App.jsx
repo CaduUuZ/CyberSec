@@ -7,6 +7,7 @@ import HashCard from "./components/HashCard";
 import PasswordCard from "./components/PasswordCard";
 import FileIntegrityCard from "./components/FileIntegrityCard";
 import ScannerCard from "./components/ScannerCard";
+import LogAnalyzerCard from "./components/LogAnalyzerCard";
 
 export default function App() {
   return (
@@ -30,6 +31,9 @@ export default function App() {
 
         {/* Card 4 - pronto! */}
         <ScannerCard />
+
+        {/* Card 5 - pronto! */}
+        <LogAnalyzerCard />
 
         {/* Os proximos cards entram aqui:
             ...cada feature nova = um componente nesta grade. */}

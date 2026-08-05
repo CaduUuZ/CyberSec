@@ -13,6 +13,7 @@ from app.features.hashing import gerar_hashes
 from app.features.password import analisar_senha
 from app.features.integrity import escanear, comparar
 from app.features.scanner import escanear as escanear_portas
+from app.features.logs import analisar_logs
 
 # 'Path' aqui e do Python (pathlib), pra checar se a pasta existe.
 from pathlib import Path
@@ -68,6 +69,11 @@ class ScanRequest(BaseModel):
     host: str
     inicio: int = 1
     fim: int = 1024
+
+
+# Card 5: o texto do log colado pelo usuario.
+class LogRequest(BaseModel):
+    texto: str
 
 
 # 4) Primeiro endpoint: a rota inicial "/", so pra testar se a API vive.
@@ -158,3 +164,9 @@ def endpoint_scan(req: ScanRequest):
         "segundos": segundos,
         "abertas": abertas,
     }
+
+
+# 10) Card 5 - Log Analyzer.
+@app.post("/api/logs")
+def endpoint_logs(req: LogRequest):
+    return analisar_logs(req.texto)
