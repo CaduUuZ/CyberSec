@@ -12,9 +12,14 @@ from pydantic import BaseModel
 from app.features.hashing import gerar_hashes
 from app.features.password import analisar_senha
 from app.features.integrity import escanear, comparar
+from app.features.scanner import escanear as escanear_portas
 
 # 'Path' aqui e do Python (pathlib), pra checar se a pasta existe.
 from pathlib import Path
+
+# socket -> resolver o host;  time -> cronometrar o scan.
+import socket
+import time
 
 
 # 1) Cria a aplicacao. 'title' aparece na documentacao automatica.
@@ -56,6 +61,13 @@ class BaselineRequest(BaseModel):
 class VerifyRequest(BaseModel):
     pasta: str
     baseline: dict[str, str]
+
+
+# Card 4: host e faixa de portas a escanear.
+class ScanRequest(BaseModel):
+    host: str
+    inicio: int = 1
+    fim: int = 1024
 
 
 # 4) Primeiro endpoint: a rota inicial "/", so pra testar se a API vive.
@@ -114,3 +126,35 @@ def endpoint_verify(req: VerifyRequest):
 
     atual = escanear(req.pasta)
     return comparar(req.baseline, atual)
+
+
+# 9) Card 4 - Port Scanner.
+@app.post("/api/scan")
+def endpoint_scan(req: ScanRequest):
+    # --- Validacoes de seguranca / sanidade ---
+    if req.inicio < 1 or req.fim > 65535 or req.inicio > req.fim:
+        return {"erro": "Faixa invalida. Use portas entre 1 e 65535."}
+
+    # Limite: no maximo 2000 portas por scan (evita scan gigante).
+    if (req.fim - req.inicio + 1) > 2000:
+        return {"erro": "Faixa muito grande. Maximo de 2000 portas por vez."}
+
+    # Resolve o host (transforma nome em IP). Se falhar, o host
+    # nao existe / nao foi encontrado.
+    try:
+        ip = socket.gethostbyname(req.host)
+    except socket.gaierror:
+        return {"erro": f"Host nao encontrado: {req.host}"}
+
+    # --- Roda o scan e cronometra ---
+    t0 = time.time()
+    abertas = escanear_portas(ip, req.inicio, req.fim)
+    segundos = round(time.time() - t0, 2)
+
+    return {
+        "host": req.host,
+        "ip": ip,
+        "faixa": f"{req.inicio}-{req.fim}",
+        "segundos": segundos,
+        "abertas": abertas,
+    }

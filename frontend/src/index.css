@@ -185,3 +185,44 @@ body {
   font-size: .8rem;
   color: var(--text);
 }
+
+/* ---- Card 4: port scanner ---- */
+.aviso {
+  background: rgba(240, 136, 62, .12);
+  border: 1px solid #f0883e55;
+  color: #f0883e;
+  font-size: .78rem;
+  padding: 8px 10px;
+  border-radius: 8px;
+  margin: 0 0 14px;
+}
+.scan-faixa {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.scan-result { margin-top: 16px; }
+.scan-info { color: var(--muted); font-size: .8rem; margin: 0 0 10px; }
+.scan-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.scan-tabela th {
+  text-align: left;
+  color: var(--muted);
+  font-size: .72rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  padding: 6px 4px;
+}
+.scan-tabela td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--border);
+}
+.scan-porta {
+  font-family: "Cascadia Code", "Consolas", monospace;
+  color: var(--accent);
+  font-weight: 600;
+}
