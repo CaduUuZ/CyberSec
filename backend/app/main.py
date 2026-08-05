@@ -11,6 +11,10 @@ from pydantic import BaseModel
 # Importamos NOSSAS funcoes das features.
 from app.features.hashing import gerar_hashes
 from app.features.password import analisar_senha
+from app.features.integrity import escanear, comparar
+
+# 'Path' aqui e do Python (pathlib), pra checar se a pasta existe.
+from pathlib import Path
 
 
 # 1) Cria a aplicacao. 'title' aparece na documentacao automatica.
@@ -40,6 +44,18 @@ class HashRequest(BaseModel):
 # Formato dos dados que o site envia para o Card 2 (a senha).
 class PasswordRequest(BaseModel):
     senha: str
+
+
+# Card 3: para criar a baseline, o site manda so a pasta.
+class BaselineRequest(BaseModel):
+    pasta: str
+
+
+# Card 3: para verificar, o site manda a pasta E a foto antiga.
+# dict[str, str] = um dicionario de {nome_do_arquivo: hash}.
+class VerifyRequest(BaseModel):
+    pasta: str
+    baseline: dict[str, str]
 
 
 # 4) Primeiro endpoint: a rota inicial "/", so pra testar se a API vive.
@@ -73,3 +89,28 @@ def endpoint_password(req: PasswordRequest):
     # Chama nossa funcao e devolve a analise. Como ela ja retorna
     # um dicionario completo, e so entregar direto.
     return analisar_senha(req.senha)
+
+
+# 7) Card 3 - criar a baseline (a "foto" de uma pasta).
+@app.post("/api/integrity/baseline")
+def endpoint_baseline(req: BaselineRequest):
+    # Antes de escanear, conferimos se a pasta existe de verdade.
+    if not Path(req.pasta).is_dir():
+        return {"erro": f"Pasta nao encontrada: {req.pasta}"}
+
+    foto = escanear(req.pasta)
+    return {
+        "pasta": req.pasta,
+        "total": len(foto),   # quantos arquivos foram fotografados
+        "baseline": foto,
+    }
+
+
+# 8) Card 3 - verificar a integridade (comparar com a foto antiga).
+@app.post("/api/integrity/verify")
+def endpoint_verify(req: VerifyRequest):
+    if not Path(req.pasta).is_dir():
+        return {"erro": f"Pasta nao encontrada: {req.pasta}"}
+
+    atual = escanear(req.pasta)
+    return comparar(req.baseline, atual)
