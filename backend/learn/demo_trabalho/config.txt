@@ -1,0 +1,3 @@
+Arquivo de configuracao
+porta=8080
+porta=31337
